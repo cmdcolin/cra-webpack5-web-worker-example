@@ -9,11 +9,12 @@ function App() {
     (async () => {
       try {
         const workerHandler = new WorkerHandler();
-        const result = (await workerHandler.call({ username: val })) as {
-          result: string;
-        };
+        const result = (await workerHandler.call({
+          username: val,
+          type: "greeting",
+        })) as string;
         console.log({ result });
-        setGreeting(result.result as string);
+        setGreeting(result as string);
       } catch (e) {
         setError(e);
       }
@@ -28,7 +29,7 @@ function App() {
         onChange={(event) => setVal(event.target.value)}
         id="username"
       />
-      <p>{greeting}</p>
+      <p>Greeting: {greeting}</p>
       {error ? <div style={{ color: "red" }}>{`${error}`}</div> : null}
     </div>
   );

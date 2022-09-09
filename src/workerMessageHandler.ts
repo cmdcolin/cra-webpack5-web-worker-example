@@ -1,3 +1,5 @@
+// this module is used on worker thread if in prod, in jest tests, a mock in
+// src/__mocks__ loads this on the main thread
 export function dispatch(args: { type: string; [key: string]: unknown }) {
   if (args.type === "greeting") {
     return greeting(args.username as string);

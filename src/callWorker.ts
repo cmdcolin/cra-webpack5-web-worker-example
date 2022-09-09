@@ -1,7 +1,7 @@
 import { deserializeError } from "serialize-error";
 
 // this is main thread code that makes postMessage requests to a worker
-export default class WorkerHandler {
+export default class CallWorker {
   resolvers: { [key: string]: (arg: any) => unknown } = {};
   rejectors: { [key: string]: (arg: any) => unknown } = {};
 
