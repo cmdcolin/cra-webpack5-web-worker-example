@@ -1,35 +1,36 @@
-import React from 'react'
-import logo from './logo.svg'
-import './App.css'
-
-const worker = new Worker(new URL('./deep-thought.ts', import.meta.url))
-worker.postMessage({
-  question:
-    'The Answer to the Ultimate Question of Life, The Universe, and Everything.',
-})
-worker.onmessage = ({ data: { answer } }) => {
-  console.log(answer)
-}
+import { useEffect, useState } from "react";
+import WorkerHandler from "./workerHandler";
 
 function App() {
+  const [greeting, setGreeting] = useState<string>();
+  const [error, setError] = useState<unknown>();
+  const [val, setVal] = useState("");
+  useEffect(() => {
+    (async () => {
+      try {
+        const workerHandler = new WorkerHandler();
+        const result = (await workerHandler.call({ username: val })) as {
+          greeting: string;
+        };
+        setGreeting(result.greeting as string);
+      } catch (e) {
+        setError(e);
+      }
+    })();
+  }, [val]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <label htmlFor="username">Username: </label>
+      <input
+        type="text"
+        value={val}
+        onChange={(event) => setVal(event.target.value)}
+        id="username"
+      />
+      <p>{greeting}</p>
+      {error ? <div style={{ color: "red" }}>{`${error}`}</div> : null}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
