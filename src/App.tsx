@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import WorkerHandler from "./workerHandler";
+import WorkerHandler from "./callWorker";
 
 function App() {
   const [greeting, setGreeting] = useState<string>();
@@ -10,9 +10,10 @@ function App() {
       try {
         const workerHandler = new WorkerHandler();
         const result = (await workerHandler.call({ username: val })) as {
-          greeting: string;
+          result: string;
         };
-        setGreeting(result.greeting as string);
+        console.log({ result });
+        setGreeting(result.result as string);
       } catch (e) {
         setError(e);
       }
