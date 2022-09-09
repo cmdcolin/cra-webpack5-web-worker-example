@@ -4,7 +4,7 @@ import WorkerHandler from "./callWorker";
 function App() {
   const [greeting, setGreeting] = useState<string>();
   const [error, setError] = useState<unknown>();
-  const [val, setVal] = useState("");
+  const [val, setVal] = useState("user");
   useEffect(() => {
     (async () => {
       try {
@@ -13,7 +13,6 @@ function App() {
           username: val,
           type: "greeting",
         })) as string;
-        console.log({ result });
         setGreeting(result as string);
       } catch (e) {
         setError(e);
